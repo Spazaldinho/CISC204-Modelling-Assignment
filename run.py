@@ -1,4 +1,3 @@
-
 from bauhaus import Encoding, proposition, constraint
 from bauhaus.utils import count_solutions, likelihood
 
@@ -9,43 +8,120 @@ config.sat_backend = "kissat"
 # Encoding that will store all of your constraints
 E = Encoding()
 
-# To create propositions, create classes for them first, annotated with "@proposition" and the Encoding
+# Checks if a tile at (i, j) is occupied by anyone
 @proposition(E)
-class BasicPropositions:
+class occupied:
+    def __init__(self, i, j, color) -> None:
+        self.i = i
+        self.j = j
+        # ADDED TO SPECIFY WHO HAS THE TILE
+        self.color = color
+    
+    def __str__(self) -> str:
+        return f"(Tile is {self.i} tiles to the right and {self.j} tiles below the top-left corner.)"
 
-    def __init__(self, data):
-        self.data = data
+# REMOVED, USING THE PLAYER COLOR ENUM TO NOTE WHO IS OCCUPYING A TILE IN OCCUPIED
+# Checks if a tile at (i, j) is occupied by blue (would imply that it is occupied as well)
+# @proposition(E)
+# class blue:
+#     def __init__(self, i, j) -> None:
+#         self.i = i
+#         self.j = j
+    
+#     def __str__(self) -> str:
+#         return f"(The tile at ({self.i}, {self.j}) is blue.)"
 
-    def __repr__(self):
-        return f"A.{self.data}"
-
-
-# Different classes for propositions are useful because this allows for more dynamic constraint creation
-# for propositions within that class. For example, you can enforce that "at least one" of the propositions
-# that are instances of this class must be true by using a @constraint decorator.
-# other options include: at most one, exactly one, at most k, and implies all.
-# For a complete module reference, see https://bauhaus.readthedocs.io/en/latest/bauhaus.html
-@constraint.at_least_one(E)
+# Indicates that the player has a sequence in a vertical line from top (i,j) to bottom (i, j+4)
 @proposition(E)
-class FancyPropositions:
+class s_vertical:
+    def __init__(self, i, j) -> None:
+        self.i = i
+        self.j = j
+    
+    def __str__(self) -> str:
+        return f"(There is a vertical sequence from ({self.i}, {self.j}) to ({self.i}, {self.j+4}).)"
 
-    def __init__(self, data):
-        self.data = data
+# Indicates that the player has a sequence in a horizontal line from left (i,j) to right (i+4, j)
+@proposition(E)
+class s_horizontal:
+    def __init__(self, i, j) -> None:
+        self.i = i
+        self.j = j
+    
+    def __str__(self) -> str:
+        return f"(There is a horizontal sequence from ({self.i}, {self.j}) to ({self.i+4}, {self.j}).)"
+    
+# Indicates that the player has a sequence in a diagonal line from bottom left (i,j) to top right (i+4, j-4)
+@proposition(E)
+class s_diagonal_up:
+    def __init__(self, i, j) -> None:
+        self.i = i
+        self.j = j
+    
+    def __str__(self) -> str:
+        return f"(There is a diagonal sequence from ({self.i}, {self.j}) to ({self.i+4}, {self.j-4}).)"
 
-    def __repr__(self):
-        return f"A.{self.data}"
+# Indicates that the player has a sequence in a diagonal line from top left (i,j) to bottom right (i+4, j+4)
+@proposition(E)
+class s_diagonal_down:
+    def __init__(self, i, j) -> None:
+        self.i = i
+        self.j = j
+    
+    def __str__(self) -> str:
+        return f"(There is a diagonal sequence from ({self.i}, {self.j}) to ({self.i+4}, {self.j+4}).)"
+    
+# If a player has a card corresponding to a tile at (i, j)
+@proposition(E)
+class can_occupy:
+    def __init__(self, i, j, color) -> None:
+        self.i = i
+        self.j = j
+        # Using color enum to show who is able to occupy
+        self.color = color
 
-# Call your variables whatever you want
-a = BasicPropositions("a")
-b = BasicPropositions("b")   
-c = BasicPropositions("c")
-d = BasicPropositions("d")
-e = BasicPropositions("e")
-# At least one of these will be true
-x = FancyPropositions("x")
-y = FancyPropositions("y")
-z = FancyPropositions("z")
+    def __str__(self)  -> None:
+        return f"({self.color} can occupy the tile at ({self.i}, {self.j}).)"
 
+# If blue can make a sequence (has a line of 4 tiles) from top (i, j) to bottom (i, j+3)
+@proposition(E)
+class can_sequence_v:
+    def __init__(self, i, j) -> None:
+        self.i = i
+        self.j = j
+    
+    def __str__(self) -> str:
+        return f"(A vertical sequence can be made around ({self.i}, {self.j}).)"
+
+# If blue can make a sequence (has a line of 4 tiles) from left (i, j) to right (i+3, j)
+@proposition(E)
+class can_sequence_h:
+    def __init__(self, i, j) -> None:
+        self.i = i
+        self.j = j
+    
+    def __str__(self) -> str:
+        return f"(A horizontal sequence can be made around ({self.i}, {self.j}).)"
+    
+# If blue can make a sequence (has a line of 4 tiles) from bottom left (i, j) to top right (i+3, j+3)
+@proposition(E)
+class can_sequence_d_up:
+    def __init__(self, i, j) -> None:
+        self.i = i
+        self.j = j
+    
+    def __str__(self) -> str:
+        return f"(A diagonal sequence can be made around ({self.i}, {self.j}).)"
+    
+# If blue can make a sequence (has a line of 4 tiles) from top (i, j) to bottom (i, j+3)
+@proposition(E)
+class can_sequence_d_down:
+    def __init__(self, i, j) -> None:
+        self.i = i
+        self.j = j
+    
+    def __str__(self) -> str:
+        return f"(A vertical sequence can be made around ({self.i}, {self.j}).)"
 
 # Build an example full theory for your setting and return it.
 #
@@ -53,21 +129,20 @@ z = FancyPropositions("z")
 #  This restriction is fairly minimal, and if there is any concern, reach out to the teaching staff to clarify
 #  what the expectations are.
 def example_theory():
-    # Add custom constraints by creating formulas with the variables you created. 
-    E.add_constraint((a | b) & ~x)
-    # Implication
-    E.add_constraint(y >> z)
-    # Negate a formula
-    E.add_constraint(~(x & y))
-    # You can also add more customized "fancy" constraints. Use case: you don't want to enforce "exactly one"
-    # for every instance of BasicPropositions, but you want to enforce it for a, b, and c.:
-    constraint.add_exactly_one(E, a, b, c)
+    # At most 2 sequences, the number of s_vertical + s_horizontal + s_diagonal_up + s_diagonal_down 
 
-    return E
+    # The size of the board is 10x10, each tile has coordinates (i,j). Top left tile is (0,0) and bottom right is (9,9)
+
+    # Sequences of the same kind can't overlap with each other, they will only be one sequence (any proposition starting with s_ is a sequence)
+
+    # Sequences and can sequence only consider blue
+    print()
+
+
+
 
 
 if __name__ == "__main__":
-
     T = example_theory()
     # Don't compile until you're finished adding all your constraints!
     T = T.compile()
@@ -77,9 +152,9 @@ if __name__ == "__main__":
     print("# Solutions: %d" % count_solutions(T))
     print("   Solution: %s" % T.solve())
 
-    print("\nVariable likelihoods:")
-    for v,vn in zip([a,b,c,x,y,z], 'abcxyz'):
-        # Ensure that you only send these functions NNF formulas
-        # Literals are compiled to NNF here
-        print(" %s: %.2f" % (vn, likelihood(T, v)))
+    # print("\nVariable likelihoods:")
+    # for v,vn in zip([a,b,c,x,y,z], 'abcxyz'):
+    #     # Ensure that you only send these functions NNF formulas
+    #     # Literals are compiled to NNF here
+    #     print(" %s: %.2f" % (vn, likelihood(T, v)))
     print()
