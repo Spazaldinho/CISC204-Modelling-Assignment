@@ -1,5 +1,7 @@
 from bauhaus import Encoding, proposition, constraint
 from bauhaus.utils import count_solutions, likelihood
+from cards import *
+from players import COLOR
 
 # These two lines make sure a faster SAT solver is used.
 from nnf import config
@@ -18,7 +20,7 @@ class occupied:
         self.color = color
     
     def __str__(self) -> str:
-        return f"(Tile is {self.i} tiles to the right and {self.j} tiles below the top-left corner.)"
+        return f"{self.color} tile at ({self.i}, {self.j})"
 
 # REMOVED, USING THE PLAYER COLOR ENUM TO NOTE WHO IS OCCUPYING A TILE IN OCCUPIED
 # Checks if a tile at (i, j) is occupied by blue (would imply that it is occupied as well)
@@ -139,8 +141,30 @@ def example_theory():
     print()
 
 
+def initialize_random_board(number_of_turns_passed):
+    import random
+    ij_pairs = []
+    occupiedList = [[], [], []]
+    for w in range (0, 3):
+        for x in range (0, number_of_turns_passed+1):
+            y = random.randint(0, 9)
+            z = random.randint(0, 9)
+            pair = [y, z]
+            if ij_pairs.__contains__(pair):
+                x -= 1
+            else:
+                ij_pairs.append(pair)
+                occupiedList[w].append(occupied(y, z, COLOR[w]))
+
+    for x in ij_pairs:
+        print(x)
+    for x in occupiedList:
+        for y in x:
+            print(y)
 
 
+    
+    
 
 if __name__ == "__main__":
     T = example_theory()
@@ -158,3 +182,5 @@ if __name__ == "__main__":
     #     # Literals are compiled to NNF here
     #     print(" %s: %.2f" % (vn, likelihood(T, v)))
     print()
+
+    # initialize_random_board(10)
