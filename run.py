@@ -172,9 +172,6 @@ def initialize_game_state():
                     E.add_constraint(playable(i, j) & playable_blue(i, j))
                     blue_cards.append(pair)
 
-    print(red_cards)
-    print(green_cards)
-    print(blue_cards)
 
 
 
