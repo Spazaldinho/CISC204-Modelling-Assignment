@@ -59,37 +59,48 @@ class o_blue(Hashable):
     
     def __str__(self) -> str:
         return f"Blue tile at ({self.i}, {self.j})"
+    
+# Defines if someone has a card that can be played on this tile
+@proposition(E)
+class playable(Hashable):
+    def __init__(self, i, j) -> None:
+        self.i = i
+        self.j = j
+    
+    def __str__(self) -> str:
+        return f"At least one player can place a token at ({self.i}, {self.j})"
+    
+# Defines if red has a card that can be played on this tile
+@proposition(E)
+class playable_red(Hashable):
+    def __init__(self, i, j) -> None:
+        self.i = i
+        self.j = j
+    
+    def __str__(self) -> str:
+        return f"Red can place a token at ({self.i}, {self.j})"
+    
+# Defines if green has a card that can be played on this tile
+@proposition(E)
+class playable_green(Hashable):
+    def __init__(self, i, j) -> None:
+        self.i = i
+        self.j = j
+    
+    def __str__(self) -> str:
+        return f"Green can place a token at ({self.i}, {self.j})"
+    
+# Defines if blue has a card that can be played on this tile
+@proposition(E)
+class playable_blue(Hashable):
+    def __init__(self, i, j) -> None:
+        self.i = i
+        self.j = j
+    
+    def __str__(self) -> str:
+        return f"Blue can place a token at ({self.i}, {self.j})"
+    
 
-# def initialize_game_state():
-#     ij_list = []
-#     red = []
-#     green = []
-#     blue = []
-#     for x in range(0, 3):
-#         for y in range(0, 10):
-#             print(f"{x}, {y}")
-#             i = random.randint(0, 9)
-#             j = random.randint(0, 9)
-#             new_ij = [i, j]
-#             if ij_list.__contains__(new_ij):
-#                 y = y - 1
-#             else:
-#                 ij_list.append(new_ij)
-#                 if x == 0:
-#                     #red tiles
-#                     E.add_constraint(And(occupied(i, j), o_red(i, j)))
-#                     red.append(new_ij)
-#                     # print(f"red + {y}, + {new_ij}")
-#                 elif x == 1:
-#                     #green tiles
-#                     E.add_constraint(And(occupied(i, j), o_green(i, j)))
-#                     green.append(new_ij)
-#                     # print(f"green + {y}, + {new_ij}")
-#                 else:
-#                     #blue tiles
-#                     E.add_constraint(And(occupied(i, j), o_blue(i, j)))
-#                     blue.append(new_ij)
-#                     # print(f"blue + {y}, + {new_ij}")
 
 def initialize_game_state():
     occupied_list = []
@@ -97,6 +108,10 @@ def initialize_game_state():
     red = []
     green = []
     blue = []
+    red_cards = []
+    green_cards = []
+    blue_cards = []
+    dealt_cards = []
     
     for x in range(0, 3):
         unique_pairs = set()  # Use a set to ensure uniqueness
@@ -131,6 +146,35 @@ def initialize_game_state():
                 not_occupied_list.append(pair)
 
     
+    for x in range(0, 3):
+
+        unique_pairs = set()
+
+        while len(unique_pairs) < 7:
+            i = random.randint(0, 9)
+            j = random.randint(0, 9)
+            pair = (i, j)
+
+            if pair not in occupied_list and pair not in dealt_cards and pair not in unique_pairs:
+                dealt_cards.append(pair)
+                unique_pairs.add(pair)
+
+                if x == 0:
+                    # Red cards
+                    E.add_constraint(playable(i, j) & playable_red(i, j))
+                    red_cards.append(pair)
+                elif x == 1:
+                    # Green cards
+                    E.add_constraint(playable(i, j) & playable_green(i, j))
+                    green_cards.append(pair)
+                else:
+                    # Blue cards
+                    E.add_constraint(playable(i, j) & playable_blue(i, j))
+                    blue_cards.append(pair)
+
+    print(red_cards)
+    print(green_cards)
+    print(blue_cards)
 
 
 
