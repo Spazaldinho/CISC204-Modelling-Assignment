@@ -1,4 +1,4 @@
-from bauhaus import Encoding, proposition, constraint
+from bauhaus import Encoding, proposition, constraint, Not
 from bauhaus.utils import count_solutions, likelihood
 from cards import *
 from players import COLOR
@@ -21,6 +21,14 @@ class occupied:
     
     def __str__(self) -> str:
         return f"{self.color} tile at ({self.i}, {self.j})"
+    
+    def __hash__(self):
+        return hash(str(self.color))
+    
+    def __eq__(self, __value: object) -> True:
+        if type(self) != type(object):
+            return False
+        return hash(self) == hash(__value)
 
 # REMOVED, USING THE PLAYER COLOR ENUM TO NOTE WHO IS OCCUPYING A TILE IN OCCUPIED
 # Checks if a tile at (i, j) is occupied by blue (would imply that it is occupied as well)
@@ -162,10 +170,23 @@ def initialize_random_board(number_of_turns_passed):
         for y in x:
             print(y)
 
+# def board_state(board):
+#     # Board size
+#     height = 10
+#     width = 10
+#     sequence_length = 5
 
+#     # Check vertical
+#     for i in range(0, 10):
+#         for j in range(0, height-(sequence_length-1)):
+#             if (board[i][j] == occupied(0,0, COLOR[2])):
+                
+
+#     # Check horizontal
+#     # Check diagonal_up
+#     # Check diagonal_down
     
     
-
 if __name__ == "__main__":
 
     initialize_random_board(10)
