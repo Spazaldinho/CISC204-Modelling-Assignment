@@ -167,6 +167,9 @@ def initialize_random_board(number_of_turns_passed):
     
 
 if __name__ == "__main__":
+
+    initialize_random_board(10)
+
     T = example_theory()
     # Don't compile until you're finished adding all your constraints!
     T = T.compile()
@@ -183,4 +186,4 @@ if __name__ == "__main__":
     #     print(" %s: %.2f" % (vn, likelihood(T, v)))
     print()
 
-    # initialize_random_board(10)
+    
