@@ -1,14 +1,26 @@
 # CISC/CMPE 204 Modelling Project
 
-Welcome to the major project for CISC/CMPE 204!
+This project was developed by Zain Parihar, Kashan Rauf, Sreecharan Billakanti, Faiyaz Kazi for the CISC/CMPE 204 modelling project.
 
-Change this README.md file to summarize your project, and provide pointers to the general structure of the repository. How you organize and build things (which files, how you structure things, etc) is entirely up to you! The only things you must keep in place are what is already listed in the **Structure** section below.
+The project models a game of Sequence, a board game where players must compete to capture lines (sequences) of adjacent tiles.
 
 ## Structure
 
 * `documents`: Contains folders for both of your draft and final submissions. README.md files are included in both.
 * `run.py`: General wrapper script that you can choose to use or not. Only requirement is that you implement the one function inside of there for the auto-checks.
 * `test.py`: Run this file to confirm that your submission has everything required. This essentially just means it will check for the right files and sufficient theory size.
+
+## Usage
+
+* The model includes a graphical interface to visualize the game, and is based on the actual layout of a Sequence board.
+* Upon running the file `run.py`, you will see a prompt that says `Open in Browser` or similar, press this button to view the interface.
+* When running the code multiple times, the active terminal must first be killed to ensure things run as expected (e.g. interface updates).
+
+## Ruleset
+
+Some rules may differ depending on preference such as sequence length, so it should be clarified that in a 3-player game of Sequence:
+* A player must only make one sequence to win
+* Sequences only need to be of length 4
 
 ## Running With Docker
 

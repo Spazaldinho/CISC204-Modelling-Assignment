@@ -22,3 +22,9 @@ RUN chmod u+x /usr/local/bin/dsharp
 
 # default command to execute when container starts
 CMD /bin/bash
+
+# Install Flask
+RUN pip3 install Flask
+
+# Make port 5000 available to the world outside this container
+EXPOSE 5000
