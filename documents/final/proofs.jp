@@ -1,0 +1,46 @@
+﻿CONJECTUREPANEL MostEpicSequents
+PROOF "¬Q, C, ¬Q∧C→T ⊢ T"
+INFER ¬Q,
+     C,
+     ¬Q∧C→T 
+     ⊢ T 
+FORMULAE
+0 T,
+1 ¬Q∧C,
+2 ¬Q∧C→T,
+3 C,
+4 ¬Q 
+IS
+SEQ (cut[B,C\1,0]) ("∧ intro"[A,B\4,3]) (hyp[A\4]) (hyp[A\3]) (cut[B,C\0,0]) ("→ elim"[A,B\1,0]) (hyp[A\2]) (hyp[A\1]) (hyp[A\0])
+END
+CONJECTUREPANEL MostEpicSequents
+PROOF "¬S∧S ⊢ T"
+INFER ¬S∧S 
+     ⊢ T 
+FORMULAE
+0 ⊥,
+1 T,
+2 ¬S,
+3 S,
+4 ¬S∧S 
+IS
+SEQ (cut[B,C\3,1]) (LAYOUT "∧ elim" (0) ("∧ elim(R)"[A,B\2,3]) (hyp[A\4])) (cut[B,C\2,1]) (LAYOUT "∧ elim" (0) ("∧ elim(L)"[A,B\2,3]) (hyp[A\4])) (cut[B,C\0,1]) ("¬ elim"[B\3]) (hyp[A\3]) (hyp[A\2]) ("contra (constructive)"[B\1]) (hyp[A\0])
+END
+CONJECTUREPANEL MostEpicSequents
+PROOF "(¬Q∧¬P)∧(¬R∧¬S), Q ⊢ T"
+INFER (¬Q∧¬P)∧(¬R∧¬S),
+     Q 
+     ⊢ T 
+FORMULAE
+0 ⊥,
+1 T,
+2 ¬Q,
+3 Q,
+4 ¬Q∧¬P,
+5 ¬P,
+6 ¬Q∧¬P∧(¬R∧¬S),
+7 ¬R∧¬S,
+8 (¬Q∧¬P)∧(¬R∧¬S)
+IS
+SEQ (cut[B,C\4,1]) (LAYOUT "∧ elim" (0) ("∧ elim(L)"[A,B\4,7]) (hyp[A\6])) (cut[B,C\2,1]) (LAYOUT "∧ elim" (0) ("∧ elim(L)"[A,B\2,5]) (hyp[A\4])) (cut[B,C\0,1]) ("¬ elim"[B\3]) (hyp[A\3]) (hyp[A\2]) ("contra (constructive)"[B\1]) (hyp[A\0])
+END
