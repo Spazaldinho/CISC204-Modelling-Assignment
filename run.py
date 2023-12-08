@@ -112,6 +112,10 @@ red_cards = []
 green_cards = []
 blue_cards = []
 dealt_cards = []
+blue_unified = []
+red_unified = []
+green_unified = []
+
 
 def initialize_game_state():
     
@@ -175,7 +179,367 @@ def initialize_game_state():
                     E.add_constraint(playable(i, j) & playable_blue(i, j))
                     blue_cards.append(pair)
 
+blueE = Encoding()
 
+@proposition(blueE)
+class blue_horizontal(Hashable):
+    def __init__(self, i, j) -> None:
+        self.i = i
+        self.j = j
+    
+    def __str__(self) -> str:
+        return f"Blue can win with tiles at ({self.i}, {self.j}), ({self.i + 1}, {self.j}), ({self.i + 2}, {self.j}), ({self.i + 3}, {self.j})."
+    
+@proposition(blueE)
+class no_blue_horizontal(Hashable):    
+    def __init__(self, i, j) -> None:
+        self.i = i
+        self.j = j
+
+    def __str__(self) -> str:
+        return f"Blue can't win with a horizontal sequence starting at ({self.i}, {self.j})."
+    
+@proposition(blueE)
+class blue_vertical(Hashable):
+    def __init__(self, i, j) -> None:
+        self.i = i
+        self.j = j
+    
+    def __str__(self) -> str:
+        return f"Blue can win with tiles at ({self.i}, {self.j}), ({self.i}, {self.j + 1}), ({self.i}, {self.j + 1}), ({self.i}, {self.j + 3})."
+    
+@proposition(blueE)
+class no_blue_vertical(Hashable):    
+    def __init__(self, i, j) -> None:
+        self.i = i
+        self.j = j
+
+    def __str__(self) -> str:
+        return f"Blue can't win with a horizontal sequence starting at ({self.i}, {self.j})."
+
+@proposition(blueE)
+class blue_diagonal(Hashable):
+    def __init__(self, i, j) -> None:
+        self.i = i
+        self.j = j
+    
+    def __str__(self) -> str:
+        return f"blue can win with a diagonal sequence going up, starting at ({self.i}, {self.j}))."
+    
+@proposition(blueE)
+class no_blue_diagonal_up(Hashable):    
+    def __init__(self, i, j) -> None:
+        self.i = i
+        self.j = j
+
+    def __str__(self) -> str:
+        return f"blue can't win with a diagonal sequence starting at ({self.i}, {self.j})."
+    
+@proposition(blueE)
+class no_blue_diagonal_down(Hashable):    
+    def __init__(self, i, j) -> None:
+        self.i = i
+        self.j = j
+    def __str__(self) -> str:
+        return f"blue can't win with a diagonal sequence going down, starting at ({self.i}, {self.j})."
+
+def check_blue_win():
+
+    for y in range(0, 10):
+        for x in range (0, 7):
+            p1 = (x, y)
+            p2 = (x + 1, y)
+            p3 = (x + 2, y)
+            p4 = (x + 3, y)
+            if p1 in blue_unified and p2 in blue_unified and p3 in blue_unified and p4 in blue_unified:
+                blueE.add_constraint(blue_horizontal(x, y))
+                flag = 1
+                print("Blue can win!")
+            else:
+                blueE.add_constraint(no_blue_horizontal(x, y))
+
+    for y in range(0, 7):
+        for x in range (0, 10):
+            p1 = (x, y)
+            p2 = (x, y + 1)
+            p3 = (x, y + 2)
+            p4 = (x, y + 3)
+            if p1 in blue_unified and p2 in blue_unified and p3 in blue_unified and p4 in blue_unified:
+                blueE.add_constraint(blue_vertical(x, y))
+                flag = 1
+                print("Blue can win!")
+            else:
+                blueE.add_constraint(no_blue_vertical(x, y))
+
+    for y in range(0, 7):
+        for x in range(0, 7):
+            p1 = (x, y)
+            p2 = (x + 1, y + 1)
+            p3 = (x + 2, y + 2)
+            p4 = (x + 3, y + 3)
+            if p1 in blue_unified and p2 in blue_unified and p3 in blue_unified and p4 in blue_unified:
+                blueE.add_constraint(blue_diagonal(x, y))
+                flag = 1
+                print("blue can win!")
+            else:
+                blueE.add_constraint(no_blue_diagonal_down(x, y))
+
+    for y in range(4, 10):
+        for x in range(0, 7):
+            p1 = (x, y)
+            p2 = (x + 1, y - 1)
+            p3 = (x + 2, y - 2)
+            p4 = (x + 3, y - 3)
+            if p1 in blue_unified and p2 in blue_unified and p3 in blue_unified and p4 in blue_unified:
+                blueE.add_constraint(blue_diagonal(x, y))
+                flag = 1
+                print("blue can win!")
+            else:
+                blueE.add_constraint(no_blue_diagonal_up(x, y))
+
+
+
+
+
+redE = Encoding()
+
+@proposition(redE)
+class red_horizontal(Hashable):
+    def __init__(self, i, j) -> None:
+        self.i = i
+        self.j = j
+    
+    def __str__(self) -> str:
+        return f"red can win with tiles at ({self.i}, {self.j}), ({self.i + 1}, {self.j}), ({self.i + 2}, {self.j}), ({self.i + 3}, {self.j})."
+    
+@proposition(redE)
+class no_red_horizontal(Hashable):    
+    def __init__(self, i, j) -> None:
+        self.i = i
+        self.j = j
+
+    def __str__(self) -> str:
+        return f"red can't win with a horizontal sequence starting at ({self.i}, {self.j})."
+    
+@proposition(redE)
+class red_vertical(Hashable):
+    def __init__(self, i, j) -> None:
+        self.i = i
+        self.j = j
+    
+    def __str__(self) -> str:
+        return f"red can win with tiles at ({self.i}, {self.j}), ({self.i}, {self.j + 1}), ({self.i}, {self.j + 1}), ({self.i}, {self.j + 3})."
+    
+@proposition(redE)
+class no_red_vertical(Hashable):    
+    def __init__(self, i, j) -> None:
+        self.i = i
+        self.j = j
+
+    def __str__(self) -> str:
+        return f"red can't win with a horizontal sequence starting at ({self.i}, {self.j})."
+    
+@proposition(redE)
+class red_diagonal(Hashable):
+    def __init__(self, i, j) -> None:
+        self.i = i
+        self.j = j
+    
+    def __str__(self) -> str:
+        return f"red can win with a diagonal sequence going up, starting at ({self.i}, {self.j}))."
+    
+@proposition(redE)
+class no_red_diagonal_up(Hashable):    
+    def __init__(self, i, j) -> None:
+        self.i = i
+        self.j = j
+
+    def __str__(self) -> str:
+        return f"red can't win with a diagonal sequence starting at ({self.i}, {self.j})."
+    
+@proposition(redE)
+class no_red_diagonal_down(Hashable):    
+    def __init__(self, i, j) -> None:
+        self.i = i
+        self.j = j
+    def __str__(self) -> str:
+        return f"red can't win with a diagonal sequence going down, starting at ({self.i}, {self.j})."
+
+def check_red_win():
+
+    for y in range(0, 10):
+        for x in range (0, 7):
+            p1 = (x, y)
+            p2 = (x + 1, y)
+            p3 = (x + 2, y)
+            p4 = (x + 3, y)
+            if p1 in red_unified and p2 in red_unified and p3 in red_unified and p4 in red_unified:
+                redE.add_constraint(red_horizontal(x, y))
+                flag = 1
+                print("red can win!")
+            else:
+                redE.add_constraint(no_red_horizontal(x, y))
+
+    for y in range(0, 7):
+        for x in range (0, 10):
+            p1 = (x, y)
+            p2 = (x, y + 1)
+            p3 = (x, y + 2)
+            p4 = (x, y + 3)
+            if p1 in red_unified and p2 in red_unified and p3 in red_unified and p4 in red_unified:
+                redE.add_constraint(red_vertical(x, y))
+                flag = 1
+                print("red can win!")
+            else:
+                redE.add_constraint(no_red_vertical(x, y))
+
+    for y in range(0, 7):
+        for x in range(0, 7):
+            p1 = (x, y)
+            p2 = (x + 1, y + 1)
+            p3 = (x + 2, y + 2)
+            p4 = (x + 3, y + 3)
+            if p1 in red_unified and p2 in red_unified and p3 in red_unified and p4 in red_unified:
+                redE.add_constraint(red_diagonal(x, y))
+                flag = 1
+                print("red can win!")
+            else:
+                redE.add_constraint(no_red_diagonal_down(x, y))
+
+    for y in range(4, 10):
+        for x in range(0, 7):
+            p1 = (x, y)
+            p2 = (x + 1, y - 1)
+            p3 = (x + 2, y - 2)
+            p4 = (x + 3, y - 3)
+            if p1 in red_unified and p2 in red_unified and p3 in red_unified and p4 in red_unified:
+                redE.add_constraint(red_diagonal(x, y))
+                flag = 1
+                print("red can win!")
+            else:
+                redE.add_constraint(no_red_diagonal_up(x, y))
+
+
+
+
+greenE = Encoding()
+
+@proposition(greenE)
+class green_horizontal(Hashable):
+    def __init__(self, i, j) -> None:
+        self.i = i
+        self.j = j
+    
+    def __str__(self) -> str:
+        return f"green can win with tiles at ({self.i}, {self.j}), ({self.i + 1}, {self.j}), ({self.i + 2}, {self.j}), ({self.i + 3}, {self.j})."
+    
+@proposition(greenE)
+class no_green_horizontal(Hashable):    
+    def __init__(self, i, j) -> None:
+        self.i = i
+        self.j = j
+
+    def __str__(self) -> str:
+        return f"green can't win with a horizontal sequence starting at ({self.i}, {self.j})."
+    
+@proposition(greenE)
+class green_vertical(Hashable):
+    def __init__(self, i, j) -> None:
+        self.i = i
+        self.j = j
+    
+    def __str__(self) -> str:
+        return f"green can win with tiles at ({self.i}, {self.j}), ({self.i}, {self.j + 1}), ({self.i}, {self.j + 1}), ({self.i}, {self.j + 3})."
+    
+@proposition(greenE)
+class no_green_vertical(Hashable):    
+    def __init__(self, i, j) -> None:
+        self.i = i
+        self.j = j
+
+    def __str__(self) -> str:
+        return f"green can't win with a horizontal sequence starting at ({self.i}, {self.j})."
+    
+@proposition(greenE)
+class green_diagonal(Hashable):
+    def __init__(self, i, j) -> None:
+        self.i = i
+        self.j = j
+    
+    def __str__(self) -> str:
+        return f"green can win with a diagonal sequence going up, starting at ({self.i}, {self.j}))."
+    
+@proposition(greenE)
+class no_green_diagonal_up(Hashable):    
+    def __init__(self, i, j) -> None:
+        self.i = i
+        self.j = j
+
+    def __str__(self) -> str:
+        return f"green can't win with a diagonal sequence starting at ({self.i}, {self.j})."
+    
+@proposition(greenE)
+class no_green_diagonal_down(Hashable):    
+    def __init__(self, i, j) -> None:
+        self.i = i
+        self.j = j
+
+    def __str__(self) -> str:
+        return f"green can't win with a diagonal sequence going down, starting at ({self.i}, {self.j})."
+
+def check_green_win():
+
+    for y in range(0, 10):
+        for x in range (0, 7):
+            p1 = (x, y)
+            p2 = (x + 1, y)
+            p3 = (x + 2, y)
+            p4 = (x + 3, y)
+            if p1 in green_unified and p2 in green_unified and p3 in green_unified and p4 in green_unified:
+                greenE.add_constraint(green_horizontal(x, y))
+                flag = 1
+                print("green can win!")
+            else:
+                greenE.add_constraint(no_green_horizontal(x, y))
+
+    for y in range(0, 7):
+        for x in range(0, 7):
+            p1 = (x, y)
+            p2 = (x + 1, y + 1)
+            p3 = (x + 2, y + 2)
+            p4 = (x + 3, y + 3)
+            if p1 in green_unified and p2 in green_unified and p3 in green_unified and p4 in green_unified:
+                greenE.add_constraint(green_diagonal(x, y))
+                flag = 1
+                print("green can win!")
+            else:
+                greenE.add_constraint(no_green_diagonal_down(x, y))
+
+    for y in range(4, 10):
+        for x in range(0, 7):
+            p1 = (x, y)
+            p2 = (x + 1, y - 1)
+            p3 = (x + 2, y - 2)
+            p4 = (x + 3, y - 3)
+            if p1 in green_unified and p2 in green_unified and p3 in green_unified and p4 in green_unified:
+                greenE.add_constraint(green_diagonal(x, y))
+                flag = 1
+                print("green can win!")
+            else:
+                greenE.add_constraint(no_green_diagonal_up(x, y))
+
+    for y in range(0, 7):
+        for x in range (0, 10):
+            p1 = (x, y)
+            p2 = (x, y + 1)
+            p3 = (x, y + 2)
+            p4 = (x, y + 3)
+            if p1 in green_unified and p2 in green_unified and p3 in green_unified and p4 in green_unified:
+                greenE.add_constraint(green_vertical(x, y))
+                flag = 1
+                print("green can win!")
+            else:
+                greenE.add_constraint(no_green_vertical(x, y))
 
 
 # Build an example full theory for your setting and return it.
@@ -195,10 +559,20 @@ def example_theory():
     print()
     return E
     
-    
-if __name__ == "__main__":
+def blue_win():
+    check_blue_win()
+    return blueE
 
-    # initialize_random_board(10)
+def red_win():
+    check_red_win()
+    return redE
+
+def green_win():
+    check_green_win()
+    return greenE
+
+
+if __name__ == "__main__":
 
     T = example_theory()
     # Don't compile until you're finished adding all your constraints!
@@ -209,163 +583,48 @@ if __name__ == "__main__":
     print("# Solutions: %d" % count_solutions(T))
     print("   Solution: %s" % T.solve())
 
-    # print("\nVariable likelihoods:")
-    # for v,vn in zip([a,b,c,x,y,z], 'abcxyz'):
-    #     # Ensure that you only send these functions NNF formulas
-    #     # Literals are compiled to NNF here
-    #     print(" %s: %.2f" % (vn, likelihood(T, v)))
-    print(red)
-    print(blue)
-    print(green)
+    #These loops create a shared list of where each team has tiles and where they can also place tiles
+    for x in range (0, 10):
+        blue_unified.append(blue[x])
+        red_unified.append(red[x])
+        green_unified.append(green[x])
+    for x in range (0, 7):
+        blue_unified.append(blue_cards[x])
+        red_unified.append(red_cards[x])
+        green_unified.append(green_cards[x])
+    
+    
+
+    B = blue_win()
+    # Don't compile until you're finished adding all your constraints!
+    B = B.compile()
+    # After compilation (and only after), you can check some of the properties
+    # of your model:
+    print("\nSatisfiable: %s" % B.satisfiable())
+    print("# Solutions: %d" % count_solutions(B))
+    print("   Solution: %s" % B.solve())
+
+    R = red_win()
+    # Don't compile until you're finished adding all your constraints!
+    R = R.compile()
+    print("\nSatisfiable: %s" % R.satisfiable())
+    print("# Solutions: %d" % count_solutions(R))
+    print("   Solution: %s" % R.solve())
+
+    G = green_win()
+    # Don't compile until you're finished adding all your constraints!
+    G = G.compile()
+    print("\nSatisfiable: %s" % G.satisfiable())
+    print("# Solutions: %d" % count_solutions(G))
+    print("   Solution: %s" % G.solve())
+
+    
+
+
     red_json = json.dumps(red)
     blue_json = json.dumps(blue)
     green_json = json.dumps(green)
-    subprocess.run([sys.executable, 'app.py', '--red', red_json, '--blue', blue_json, '--green', green_json])
-
-
-    
-
-
-
-
-
-# def initialize_random_board(number_of_turns_passed):
-#     import random
-#     ij_pairs = []
-#     occupiedList = [[], [], []]
-#     for w in range (0, 3):
-#         for x in range (0, number_of_turns_passed+1):
-#             y = random.randint(0, 9)
-#             z = random.randint(0, 9)
-#             pair = [y, z]
-#             if ij_pairs.__contains__(pair):
-#                 x -= 1
-#             else:
-#                 ij_pairs.append(pair)
-#                 occupiedList[w].append(occupied(y, z, COLOR[w]))
-
-#     for x in ij_pairs:
-#         print(x)
-#     for x in occupiedList:
-#         for y in x:
-#             print(y)
-
-# def board_state(board):
-#     # Board size
-#     height = 10
-#     width = 10
-#     sequence_length = 5
-
-#     # Check vertical
-#     for i in range(0, 10):
-#         for j in range(0, height-(sequence_length-1)):
-#             if (board[i][j] == occupied(0,0, COLOR[2])):
-                
-
-#     # Check horizontal
-#     # Check diagonal_up
-#     # Check diagonal_down
-# 
-#     
-# REMOVED, USING THE PLAYER COLOR ENUM TO NOTE WHO IS OCCUPYING A TILE IN OCCUPIED
-# # Checks if a tile at (i, j) is occupied by blue (would imply that it is occupied as well)
-# # @proposition(E)
-# # class blue:
-# #     def __init__(self, i, j) -> None:
-# #         self.i = i
-# #         self.j = j
-    
-# #     def __str__(self) -> str:
-# #         return f"(The tile at ({self.i}, {self.j}) is blue.)"
-
-# # Indicates that the player has a sequence in a vertical line from top (i,j) to bottom (i, j+4)
-# @proposition(E)
-# class s_vertical:
-#     def __init__(self, i, j) -> None:
-#         self.i = i
-#         self.j = j
-    
-#     def __str__(self) -> str:
-#         return f"(There is a vertical sequence from ({self.i}, {self.j}) to ({self.i}, {self.j+4}).)"
-
-# # Indicates that the player has a sequence in a horizontal line from left (i,j) to right (i+4, j)
-# @proposition(E)
-# class s_horizontal:
-#     def __init__(self, i, j) -> None:
-#         self.i = i
-#         self.j = j
-    
-#     def __str__(self) -> str:
-#         return f"(There is a horizontal sequence from ({self.i}, {self.j}) to ({self.i+4}, {self.j}).)"
-    
-# # Indicates that the player has a sequence in a diagonal line from bottom left (i,j) to top right (i+4, j-4)
-# @proposition(E)
-# class s_diagonal_up:
-#     def __init__(self, i, j) -> None:
-#         self.i = i
-#         self.j = j
-    
-#     def __str__(self) -> str:
-#         return f"(There is a diagonal sequence from ({self.i}, {self.j}) to ({self.i+4}, {self.j-4}).)"
-
-# # Indicates that the player has a sequence in a diagonal line from top left (i,j) to bottom right (i+4, j+4)
-# @proposition(E)
-# class s_diagonal_down:
-#     def __init__(self, i, j) -> None:
-#         self.i = i
-#         self.j = j
-    
-#     def __str__(self) -> str:
-#         return f"(There is a diagonal sequence from ({self.i}, {self.j}) to ({self.i+4}, {self.j+4}).)"
-    
-# # If a player has a card corresponding to a tile at (i, j)
-# @proposition(E)
-# class can_occupy:
-#     def __init__(self, i, j, color) -> None:
-#         self.i = i
-#         self.j = j
-#         # Using color enum to show who is able to occupy
-#         self.color = color
-
-#     def __str__(self)  -> None:
-#         return f"({self.color} can occupy the tile at ({self.i}, {self.j}).)"
-
-# # If blue can make a sequence (has a line of 4 tiles) from top (i, j) to bottom (i, j+3)
-# @proposition(E)
-# class can_sequence_v:
-#     def __init__(self, i, j) -> None:
-#         self.i = i
-#         self.j = j
-    
-#     def __str__(self) -> str:
-#         return f"(A vertical sequence can be made around ({self.i}, {self.j}).)"
-
-# # If blue can make a sequence (has a line of 4 tiles) from left (i, j) to right (i+3, j)
-# @proposition(E)
-# class can_sequence_h:
-#     def __init__(self, i, j) -> None:
-#         self.i = i
-#         self.j = j
-    
-#     def __str__(self) -> str:
-#         return f"(A horizontal sequence can be made around ({self.i}, {self.j}).)"
-    
-# # If blue can make a sequence (has a line of 4 tiles) from bottom left (i, j) to top right (i+3, j+3)
-# @proposition(E)
-# class can_sequence_d_up:
-#     def __init__(self, i, j) -> None:
-#         self.i = i
-#         self.j = j
-    
-#     def __str__(self) -> str:
-#         return f"(A diagonal sequence can be made around ({self.i}, {self.j}).)"
-    
-# # If blue can make a sequence (has a line of 4 tiles) from top (i, j) to bottom (i, j+3)
-# @proposition(E)
-# class can_sequence_d_down:
-#     def __init__(self, i, j) -> None:
-#         self.i = i
-#         self.j = j
-    
-#     def __str__(self) -> str:
-#         return f"(A vertical sequence can be made around ({self.i}, {self.j}).)"
+    red_cards_json = json.dumps(red_cards)
+    blue_cards_json = json.dumps(blue_cards)
+    green_cards_json = json.dumps(green_cards)
+    subprocess.run([sys.executable, 'app.py', '--red', red_json, '--blue', blue_json, '--green', green_json, '--red_cards', red_cards_json, '--blue_cards', blue_cards_json, '--green_cards', green_cards_json])

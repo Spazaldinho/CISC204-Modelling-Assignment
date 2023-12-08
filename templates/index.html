@@ -21,13 +21,16 @@
         .red { background-color: red; }
         .green { background-color: green; }
         .blue { background-color: blue; }
+        .can-play-red { background-color: lightcoral; }
+        .can-play-green { background-color: lightgreen; }
+        .can-play-blue { background-color: lightblue; }
     </style>
 </head>
 <body>
     <div class="board">
         {% for row in board_data %}
-            {% for card_img, color in row %}
-                <div class="tile{% if color %} {{ color }}{% endif %}">
+            {% for card_img, color, can_play in row %}
+                <div class="tile{% if color %} {{ color }}{% endif %}{% if can_play %} {{ can_play }}{% endif %}">
                     <img src="{{ url_for('static', filename='PNG-cards-1.3/' + card_img) }}" class="card-img">
                 </div>
             {% endfor %}
