@@ -27,7 +27,7 @@
     <div class="board">
         {% for row in board_data %}
             {% for card_img, color in row %}
-                <div class="tile">
+                <div class="tile{% if color %} {{ color }}{% endif %}">
                     <img src="{{ url_for('static', filename='PNG-cards-1.3/' + card_img) }}" class="card-img">
                 </div>
             {% endfor %}

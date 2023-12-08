@@ -37,23 +37,22 @@ def get_card_image_filename(card):
 
 @app.route('/')
 def index():
-    # Prepare data for the template
-    print(args.red)
-    print(args.blue)
-    print(args.green)
     board_data = []
-    for i, row in enumerate(run.TILES):
+    for i, row in enumerate(TILES):
         row_data = []
         for j, tile in enumerate(row):
             card_img = get_card_image_filename(tile.card)
-            occupied_color = "none"
-            if (i, j) in args.red:
+            occupied_color = None
+            
+            if [i, j] in red:
                 occupied_color = "red"
-            elif (i, j) in args.green:
-                occupied_color = "green"
-            elif (i, j) in args.blue:
+            elif [i, j] in blue:
                 occupied_color = "blue"
+            elif [i, j] in green:
+                occupied_color = "green"
+            
             row_data.append((card_img, occupied_color))
+        
         board_data.append(row_data)
 
     return render_template('index.html', board_data=board_data)

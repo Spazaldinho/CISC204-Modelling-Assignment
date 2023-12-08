@@ -116,7 +116,7 @@ TILES = [
         tile(DECK[17], 2, 1),  # 4 of Clubs
         tile(DECK[18], 3, 1),  # 3 of Clubs
         tile(DECK[19], 4, 1),  # 2 of Clubs
-        tile(DECK[52], 5, 1),  # Ace of Hearts
+        tile(DECK[13], 5, 1),  # Ace of Hearts
         tile(DECK[48], 6, 1),  # King of Hearts
         tile(DECK[47], 7, 1),  # Queen of Hearts
         tile(DECK[36], 8, 1),  # 10 of Hearts
@@ -164,7 +164,7 @@ TILES = [
         tile(DECK[20], 2, 5),  # 8 of Clubs
         tile(DECK[49], 3, 5),  # 7 of Hearts
         tile(DECK[6], 4, 5),   # 7 of Diamonds
-        tile(DECK[52], 5, 5),  # Ace of Hearts
+        tile(DECK[13], 5, 5),  # Ace of Hearts
         tile(DECK[5], 6, 5),   # 6 of Diamonds
         tile(DECK[9], 7, 5),   # 10 of Diamonds
         tile(DECK[35], 8, 5),  # 6 of Hearts
