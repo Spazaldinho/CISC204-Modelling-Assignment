@@ -159,65 +159,69 @@ TILES = [
         tile(DECK[40], 9, 4)   # Ace of Spades
     ],
     [
-        tile(DECK[52], 0, 0),  # Joker
-        tile(DECK[27], 1, 0),  # 2 of Spades
-        tile(DECK[28], 2, 0),  # 3 of Spades
-        tile(DECK[29], 3, 0),  # 4 of Spades
-        tile(DECK[30], 4, 0),  # 5 of Spades
-        tile(DECK[31], 5, 0),  # 6 of Spades
-        tile(DECK[32], 6, 0),  # 7 of Spades
-        tile(DECK[33], 7, 0),  # 8 of Spades
-        tile(DECK[34], 8, 0),  # 9 of Spades
-        tile(DECK[52], 9, 0)   # Joker
+        tile(DECK[38], 0, 5),  # 10 of Clubs
+        tile(DECK[39], 1, 5),  # 10 of Spades
+        tile(DECK[20], 2, 5),  # 8 of Clubs
+        tile(DECK[49], 3, 5),  # 7 of Hearts
+        tile(DECK[6], 4, 5),   # 7 of Diamonds
+        tile(DECK[52], 5, 5),  # Ace of Hearts
+        tile(DECK[5], 6, 5),   # 6 of Diamonds
+        tile(DECK[9], 7, 5),   # 10 of Diamonds
+        tile(DECK[35], 8, 5),  # 6 of Hearts
+        tile(DECK[1], 9, 5)    # 2 of Diamonds
     ],
+    # R1
     [
-        tile(DECK[15], 0, 1),  # 6 of Clubs
-        tile(DECK[16], 1, 1),  # 5 of Clubs
-        tile(DECK[17], 2, 1),  # 4 of Clubs
-        tile(DECK[18], 3, 1),  # 3 of Clubs
-        tile(DECK[19], 4, 1),  # 2 of Clubs
-        tile(DECK[52], 5, 1),  # Ace of Hearts
-        tile(DECK[48], 6, 1),  # King of Hearts
-        tile(DECK[47], 7, 1),  # Queen of Hearts
-        tile(DECK[36], 8, 1),  # 10 of Hearts
-        tile(DECK[33], 9, 1)   # 10 of Spades
+        tile(DECK[26], 0, 6),  # Queen of Clubs
+        tile(DECK[42], 1, 6),  # 9 of Spades
+        tile(DECK[22], 2, 6),  # 9 of Clubs
+        tile(DECK[49], 3, 6),  # 8 of Hearts
+        tile(DECK[48], 4, 6),  # 9 of Hearts
+        tile(DECK[36], 5, 6),  # 10 of Hearts
+        tile(DECK[47], 6, 6),  # Queen of Hearts
+        tile(DECK[7], 7, 6),   # Queen of Diamonds
+        tile(DECK[34], 8, 6),  # 5 of Hearts
+        tile(DECK[2], 9, 6)    # 3 of Diamonds
     ],
+    # R2
     [
-        tile(DECK[23], 0, 2),  # 7 of Clubs
-        tile(DECK[50], 1, 2),  # Ace of Spades
-        tile(DECK[1], 2, 2),   # 2 of Diamonds
-        tile(DECK[2], 3, 2),   # 3 of Diamonds
-        tile(DECK[3], 4, 2),   # 4 of Diamonds
-        tile(DECK[4], 5, 2),   # 5 of Diamonds
-        tile(DECK[5], 6, 2),   # 6 of Diamonds
-        tile(DECK[6], 7, 2),   # 7 of Diamonds
-        tile(DECK[36], 8, 2),  # 9 of Hearts
-        tile(DECK[41], 9, 2)   # Queen of Spades
+        tile(DECK[21], 0, 7),  # King of Clubs
+        tile(DECK[41], 1, 7),  # 8 of Spades
+        tile(DECK[38], 2, 7),  # 10 of Clubs
+        tile(DECK[26], 3, 7),  # Queen of Clubs
+        tile(DECK[21], 4, 7),  # King of Clubs
+        tile(DECK[0], 5, 7),   # Ace of Clubs
+        tile(DECK[6], 6, 7),   # Ace of Diamonds
+        tile(DECK[7], 7, 7),   # King of Diamonds
+        tile(DECK[33], 8, 7),  # 4 of Hearts
+        tile(DECK[1], 9, 7)    # 4 of Diamonds
     ],
+    # R3
     [
-        tile(DECK[20], 0, 3),  # 8 of Clubs
-        tile(DECK[40], 1, 3),  # King of Spades
-        tile(DECK[17], 2, 3),  # 6 of Clubs
-        tile(DECK[18], 3, 3),  # 5 of Clubs
-        tile(DECK[19], 4, 3),  # 4 of Clubs
-        tile(DECK[16], 5, 3),  # 3 of Clubs
-        tile(DECK[15], 6, 3),  # 2 of Clubs
-        tile(DECK[25], 7, 3),  # 8 of Diamonds
-        tile(DECK[36], 8, 3),  # 8 of Hearts
-        tile(DECK[40], 9, 3)   # King of Spades
+        tile(DECK[0], 0, 8),   # Ace of Clubs
+        tile(DECK[42], 1, 8),  # 7 of Spades
+        tile(DECK[30], 2, 8),  # 6 of Spades
+        tile(DECK[28], 3, 8),  # 5 of Spades
+        tile(DECK[27], 4, 8),  # 4 of Spades
+        tile(DECK[25], 5, 8),  # 3 of Spades
+        tile(DECK[24], 6, 8),  # 2 of Spades
+        tile(DECK[8], 7, 8),   # 2 of Hearts
+        tile(DECK[9], 8, 8),   # 3 of Hearts
+        tile(DECK[3], 9, 8)    # 5 of Diamonds
     ],
+    # R4
     [
-        tile(DECK[22], 0, 4),  # 9 of Clubs
-        tile(DECK[40], 1, 4),  # Queen of Spades
-        tile(DECK[15], 2, 4),  # 7 of Clubs
-        tile(DECK[35], 3, 4),  # 6 of Hearts
-        tile(DECK[34], 4, 4),  # 5 of Hearts
-        tile(DECK[33], 5, 4),  # 4 of Hearts
-        tile(DECK[32], 6, 4),  # Ace of Hearts
-        tile(DECK[36], 7, 4),  # 9 of Diamonds
-        tile(DECK[37], 8, 4),  # 7 of Hearts
-        tile(DECK[40], 9, 4)   # Ace of Spades
-    ],
+        tile(DECK[52], 0, 9),  # Joker
+        tile(DECK[5], 1, 9),   # Ace of Diamonds
+        tile(DECK[7], 2, 9),   # King of Diamonds
+        tile(DECK[6], 3, 9),   # Queen of Diamonds
+        tile(DECK[38], 4, 9),  # 10 of Diamonds
+        tile(DECK[22], 5, 9),  # 9 of Diamonds
+        tile(DECK[20], 6, 9),  # 8 of Diamonds
+        tile(DECK[18], 7, 9),  # 7 of Diamonds
+        tile(DECK[16], 8, 9),  # 6 of Diamonds
+        tile(DECK[52], 9, 9),  # Joker
+    ]
 ]
     
 if __name__ == "__main__":

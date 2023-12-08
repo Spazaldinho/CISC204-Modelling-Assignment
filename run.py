@@ -2,6 +2,9 @@ from bauhaus import Encoding, proposition, constraint, And
 from bauhaus.utils import count_solutions, likelihood
 from cards import *
 import random
+import subprocess
+import sys
+import json
 
 # These two lines make sure a faster SAT solver is used.
 from nnf import config
@@ -100,18 +103,18 @@ class playable_blue(Hashable):
     def __str__(self) -> str:
         return f"Blue can place a token at ({self.i}, {self.j})"
     
-
+occupied_list = []
+not_occupied_list = []
+red = []
+green = []
+blue = []
+red_cards = []
+green_cards = []
+blue_cards = []
+dealt_cards = []
 
 def initialize_game_state():
-    occupied_list = []
-    not_occupied_list = []
-    red = []
-    green = []
-    blue = []
-    red_cards = []
-    green_cards = []
-    blue_cards = []
-    dealt_cards = []
+    
     
     for x in range(0, 3):
         unique_pairs = set()  # Use a set to ensure uniqueness
@@ -211,7 +214,14 @@ if __name__ == "__main__":
     #     # Ensure that you only send these functions NNF formulas
     #     # Literals are compiled to NNF here
     #     print(" %s: %.2f" % (vn, likelihood(T, v)))
-    print()
+    print(red)
+    print(blue)
+    print(green)
+    red_json = json.dumps(red)
+    blue_json = json.dumps(blue)
+    green_json = json.dumps(green)
+    subprocess.run([sys.executable, 'app.py', '--red', red_json, '--blue', blue_json, '--green', green_json])
+
 
     
 
